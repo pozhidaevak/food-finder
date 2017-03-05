@@ -9,6 +9,7 @@
         "barryvdh/laravel-ide-helper": "v2.3.2",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
+        "laravelcollective/html": "^5.2.0",
         "reliese/laravel": "^0.0.13"
     },
     "require-dev": {
