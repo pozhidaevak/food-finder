@@ -12,3 +12,4 @@
 */
 
 Route::get('/', 'RestaurantController@index');
+Route::get('locale/{locale}', 'RestaurantController@locale');
