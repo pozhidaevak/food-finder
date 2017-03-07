@@ -70,7 +70,7 @@
 </head>
 <body>
 
-    {!! Form::select('locale', ['rus' => 'Russian', 'eng' => 'English'], $locale) !!}
+    {!! Form::select('locale', $locales, $currentLocale) !!}
     @yield('content')
     <script type="application/javascript" async>
         $("[name=locale]").change( function() {

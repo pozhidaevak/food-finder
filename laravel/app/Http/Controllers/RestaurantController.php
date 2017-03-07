@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Language;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Cookie\CookieJar;
@@ -11,15 +12,31 @@ class RestaurantController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @param CookieJar $cookieJar
+     * @param $currentLocale string with name of current locale
      * @return \Illuminate\Http\Response
+     * @internal param $
      */
-    public function index(CookieJar $cookieJar, $locale)
+    public function index(CookieJar $cookieJar, $currentLocale)
     {
-        \App::setLocale($locale);
-        $cookieJar->queue(cookie('lang', $locale));
+        //setting locale
+        \App::setLocale($currentLocale);
+
+        //Adding cookie with current local
+        $cookieJar->queue(cookie('lang', $currentLocale));
+
+
+        //retrieving list of locales and converting it to associative array
+        $langs = Language::all();
+        $locales = array();
+        foreach($langs as $lang) {
+            $locales[$lang->code] = $lang->native_name . ' (' . $lang->eng_name . ')';
+        }
+
+        //retrieving lists of all restaurants
         $restaurants = Restaurant::all();
-        return view('restaurants', compact('restaurants', 'locale'));
+
+        return view('restaurants', compact('restaurants', 'currentLocale', 'locales'));
     }
 
     /**
