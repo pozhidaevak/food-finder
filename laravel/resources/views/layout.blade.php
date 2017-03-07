@@ -66,8 +66,16 @@
         }
     </style>
     @yield('head')
+
 </head>
 <body>
+
+    {!! Form::select('locale', ['rus' => 'Russian', 'eng' => 'English'], $locale) !!}
     @yield('content')
+    <script type="application/javascript" async>
+        $("[name=locale]").change( function() {
+            window.location.assign('/' + this.value)
+        })
+    </script>
 </body>
 </html>

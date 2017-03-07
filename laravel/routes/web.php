@@ -11,5 +11,8 @@
 |
 */
 
-Route::get('/', 'RestaurantController@index');
-Route::get('locale/{locale}', 'RestaurantController@locale');
+Route::get('/', function () {
+    $locale = Cookie::get('lang', App::getLocale());
+    return redirect($locale);
+});
+Route::get('{locale}/', 'RestaurantController@index');

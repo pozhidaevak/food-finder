@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Cookie\CookieJar;
+
 
 class RestaurantController extends Controller
 {
@@ -12,11 +14,12 @@ class RestaurantController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CookieJar $cookieJar, $locale)
     {
+        \App::setLocale($locale);
+        $cookieJar->queue(cookie('lang', $locale));
         $restaurants = Restaurant::all();
-        logger($restaurants);
-        return view('restaurants', compact('restaurants'));
+        return view('restaurants', compact('restaurants', 'locale'));
     }
 
     /**
