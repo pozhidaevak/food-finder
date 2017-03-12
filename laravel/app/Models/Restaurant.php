@@ -1,74 +1,45 @@
 <?php
 
-/**
- * Created by Reliese Model.
- * Date: Sun, 05 Mar 2017 22:34:09 +0000.
- */
-
 namespace App\Models;
 
-use Reliese\Database\Eloquent\Model as Eloquent;
+use Carbon\Carbon;
 
-/**
- * Class Restaurant
- * 
- * @property int $id
- * @property bool $is_active
- * @property float $lat
- * @property float $lng
- * @property string $postcode
- * @property string $smallimage
- * @property string $bigimage
- * @property string $adr_firstline
- * @property string $phone
- * @property string $website
- * 
- * @property \Illuminate\Database\Eloquent\Collection $foods
- * @property \Illuminate\Database\Eloquent\Collection $restaurant_schedules
- * @property \Illuminate\Database\Eloquent\Collection $restaurant_transls
- *
- * @package App\Models
- */
-class Restaurant extends Eloquent
+class Restaurant extends \App\Models\Base\Restaurant
 {
-	protected $table = 'restaurant';
-	public $timestamps = false;
+    protected $fillable = [
+        'is_active',
+        'lat',
+        'lng',
+        'postcode',
+        'adr_firstline',
+        'phone',
+        'website',
+        'name'
+    ];
 
-	protected $casts = [
-		'is_active' => 'bool',
-		'lat' => 'float',
-		'lng' => 'float'
-	];
+    /**
+     * @return string Human readable string that determinate if restaurant is open now and when it will be open
+     *
+     */
+    public function openString()
+    {
+        $displFormat = 'H:i';
 
-	protected $fillable = [
-		'is_active',
-		'lat',
-		'lng',
-		'postcode',
-		'smallimage',
-		'bigimage',
-		'adr_firstline',
-		'phone',
-		'website'
-	];
+        $dayOfWeek = Carbon::now()->dayOfWeek;
 
-	public function postcode()
-	{
-		return $this->belongsTo(\App\Models\Postcode::class, 'postcode');
-	}
+        $tdSchedule = $this->restaurant_schedules()->where('weekday_names_id', $dayOfWeek)->first();
+        //$tdTimeTo = $this->restaurant_schedules()->where('weekday_names_id', $dayOfWeek)->first()->time_to;
 
-	public function foods()
-	{
-		return $this->belongsToMany(\App\Models\Food::class, 'restaurant_has_food', 'restaurant_id', 'food_path');
-	}
+        if (Carbon::now()->between($tdSchedule->time_from, $tdSchedule->time_to)) { // if works now
+            return __("Open till: ") . $tdSchedule->time_to->format($displFormat);
+        } else if (Carbon::now()->lt($tdSchedule->time_from)) { //if still hasn't opened today
+            return __("Will open at: ") . $tdSchedule->time_from->format($displFormat);
+        } else { //already closed today
+            $tmDayOfWeek = Carbon::now()->addDay()->dayOfWeek;
+            return __("Will open tomorrow at: ") .
+                $this->restaurant_schedules()->where('weekday_names_id', $tmDayOfWeek)->first()->time_from->format($displFormat);
+        }
+    }
 
-	public function restaurant_schedules()
-	{
-		return $this->hasMany(\App\Models\RestaurantSchedule::class);
-	}
 
-	public function restaurant_transls()
-	{
-		return $this->hasMany(\App\Models\RestaurantTransl::class);
-	}
 }
