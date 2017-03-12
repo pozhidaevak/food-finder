@@ -1,6 +1,11 @@
 {
   "Open till: ": "Открыт до: ",
   "Will open tomorrow at: ": "Откроется завтра в: ",
-  "Will open at: ": "Откроется в: "
+  "Will open at: ": "Откроется в: ",
+  "Search by location: ": "Поиск по местонахождению: ",
+  "Distance from location: ": "Растояние от места: ",
+  "Input location or place...": "Введите местонахождение",
+  "Go!": "Вперед!"
+
 
 }
