@@ -1,2 +1,2 @@
 For creation of modules use 
-php artisan code:models
+<code>php artisan code:models</code>
