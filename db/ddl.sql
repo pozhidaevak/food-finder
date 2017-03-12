@@ -40,11 +40,10 @@ CREATE TABLE IF NOT EXISTS `food-finder`.`restaurant` (
   `lat` DECIMAL(18,16) NOT NULL,
   `lng` DECIMAL(19,16) NOT NULL,
   `postcode` VARCHAR(10) NOT NULL,
-  `smallimage` VARCHAR(45) NULL,
-  `bigimage` VARCHAR(45) NULL,
   `adr_firstline` VARCHAR(100) NOT NULL,
   `phone` VARCHAR(14) NULL,
   `website` VARCHAR(45) NULL,
+  `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_restaurant_postcode1_idx` (`postcode` ASC),
   CONSTRAINT `fk_restaurant_postcode1`
@@ -160,12 +159,10 @@ DROP TABLE IF EXISTS `food-finder`.`restaurant_transl` ;
 CREATE TABLE IF NOT EXISTS `food-finder`.`restaurant_transl` (
   `restaurant_id` INT NOT NULL,
   `language_code` VARCHAR(3) NOT NULL,
-  `name` VARCHAR(45) NOT NULL,
   `description` VARCHAR(1000) NULL,
   `schedule_change` VARCHAR(200) NULL,
   PRIMARY KEY (`restaurant_id`, `language_code`),
   INDEX `fk_restaurant_transl_language1_idx` (`language_code` ASC),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC),
   CONSTRAINT `fk_restaurant_transl_restaurant1`
     FOREIGN KEY (`restaurant_id`)
     REFERENCES `food-finder`.`restaurant` (`id`)
@@ -202,26 +199,6 @@ CREATE TABLE IF NOT EXISTS `food-finder`.`food_transl` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `food-finder` ;
-
--- -----------------------------------------------------
--- Placeholder table for view `food-finder`.`v_restaurant`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `food-finder`.`v_restaurant` (`id` INT, `is_active` INT, `lat` INT, `lng` INT, `postcode` INT, `smallimage` INT, `bigimage` INT, `adr_firstline` INT, `phone` INT, `website` INT);
-
--- -----------------------------------------------------
--- View `food-finder`.`v_restaurant`
--- -----------------------------------------------------
-DROP VIEW IF EXISTS `food-finder`.`v_restaurant` ;
-DROP TABLE IF EXISTS `food-finder`.`v_restaurant`;
-USE `food-finder`;
-CREATE  OR REPLACE VIEW `v_restaurant` AS
-    SELECT 
-        *
-    FROM
-        restaurant
-    WHERE
-        is_active != 0;
 SET SQL_MODE = '';
 GRANT USAGE ON *.* TO php_ro;
  DROP USER php_ro;
@@ -231,16 +208,12 @@ CREATE USER 'php_ro' IDENTIFIED BY 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`food` TO 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`postcode` TO 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`restaurant_schedule` TO 'php_ro';
-GRANT SELECT ON TABLE `food-finder`.`v_restaurant` TO 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`restaurant_has_food` TO 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`food_transl` TO 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`restaurant_transl` TO 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`weekday_names` TO 'php_ro';
 GRANT SELECT ON TABLE `food-finder`.`language` TO 'php_ro';
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+GRANT SELECT ON TABLE `food-finder`.`restaurant` TO 'php_ro';
 
 -- -----------------------------------------------------
 -- Data for table `food-finder`.`postcode`
@@ -258,8 +231,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `food-finder`;
-INSERT INTO `food-finder`.`restaurant` (`id`, `is_active`, `lat`, `lng`, `postcode`, `smallimage`, `bigimage`, `adr_firstline`, `phone`, `website`) VALUES (1, 1, 52.9561578, -1.1528738, 'NG1 5JT', NULL, NULL, '17', '0115 924 3730', 'www.hih.co.uk');
-INSERT INTO `food-finder`.`restaurant` (`id`, `is_active`, `lat`, `lng`, `postcode`, `smallimage`, `bigimage`, `adr_firstline`, `phone`, `website`) VALUES (2, 1, 52.950938, -1.1452939, 'NG1 1HN', NULL, NULL, 'The Unitarian Church', '0115 958 6081', 'www.pnp.co.uk');
+INSERT INTO `food-finder`.`restaurant` (`id`, `is_active`, `lat`, `lng`, `postcode`, `adr_firstline`, `phone`, `website`, `name`) VALUES (1, 1, 52.9561578, -1.1528738, 'NG1 5JT', '17', '0115 924 3730', 'www.hih.co.uk', 'Horn in Hand');
+INSERT INTO `food-finder`.`restaurant` (`id`, `is_active`, `lat`, `lng`, `postcode`, `adr_firstline`, `phone`, `website`, `name`) VALUES (2, 1, 52.950938, -1.1452939, 'NG1 1HN', 'The Unitarian Church', '0115 958 6081', 'www.pnp.co.uk', 'Pitcher & Piano');
 
 COMMIT;
 
@@ -286,14 +259,14 @@ INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (4, 'Thu', 'eng');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (5, 'Fri', 'eng');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (6, 'Sat', 'eng');
-INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (7, 'Sun', 'eng');
+INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (0, 'Sun', 'eng');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (1, 'Пн', 'rus');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (2, 'Вт', 'rus');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (3, 'Ср', 'rus');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (4, 'Чт', 'rus');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (5, 'Пт', 'rus');
 INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (6, 'Сб', 'rus');
-INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (7, 'Вс', 'rus');
+INSERT INTO `food-finder`.`weekday_names` (`id`, `name`, `language_code`) VALUES (0, 'Вс', 'rus');
 
 COMMIT;
 
@@ -309,14 +282,14 @@ INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restau
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('10:00', '23:00', 1, 4);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('10:00', '23:30', 1, 5);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('10:00', '23:30', 1, 6);
-INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '23:00', 1, 7);
+INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '23:00', 1, 0);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '18:00', 2, 1);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '22:00', 2, 2);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '22:00', 2, 3);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '22:00', 2, 4);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '23:00', 2, 5);
 INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '23:00', 2, 6);
-INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '23:00', 2, 7);
+INSERT INTO `food-finder`.`restaurant_schedule` (`time_from`, `time_to`, `restaurant_id`, `weekday_names_id`) VALUES ('12:00', '23:00', 2, 0);
 
 COMMIT;
 
@@ -355,10 +328,10 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `food-finder`;
-INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `name`, `description`, `schedule_change`) VALUES (2, 'rus', 'Кувшин и Пианино', 'Описание кувишна и пианино', NULL);
-INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `name`, `description`, `schedule_change`) VALUES (2, 'eng', 'Pitcher & Piano', 'Modern chain bar serving beer, wine and cocktails, plus a menu of grazing plates and pub classics.', NULL);
-INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `name`, `description`, `schedule_change`) VALUES (1, 'eng', 'Horn in Hand', 'Buzzy pub with an extensive menu of burgers, steaks and nachos, plus TV sports and craft beers.', NULL);
-INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `name`, `description`, `schedule_change`) VALUES (1, 'rus', 'Хорн ин Хэнд', 'Описание Хорн ин Хэнд', NULL);
+INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `description`, `schedule_change`) VALUES (2, 'rus', 'Описание кувишна и пианино', NULL);
+INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `description`, `schedule_change`) VALUES (2, 'eng', 'Modern chain bar serving beer, wine and cocktails, plus a menu of grazing plates and pub classics.', NULL);
+INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `description`, `schedule_change`) VALUES (1, 'eng', 'Buzzy pub with an extensive menu of burgers, steaks and nachos, plus TV sports and craft beers.', NULL);
+INSERT INTO `food-finder`.`restaurant_transl` (`restaurant_id`, `language_code`, `description`, `schedule_change`) VALUES (1, 'rus', 'Описание Хорн ин Хэнд', NULL);
 
 COMMIT;
 
@@ -371,7 +344,7 @@ USE `food-finder`;
 INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/2', 'eng', 'Beer');
 INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/2', 'rus', 'Пиво');
 INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/1', 'eng', 'Main dishes');
-INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/1', 'rus', 'Основные блюда');
+INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/1', 'rus', 'Основныe блюда');
 INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/1/1', 'rus', 'Пастуший пирог');
 INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/1/1', 'eng', 'Shepard pie');
 INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) VALUES ('/1/2', 'rus', 'Мясной пирог');
@@ -383,3 +356,7 @@ INSERT INTO `food-finder`.`food_transl` (`food_path`, `language_code`, `name`) V
 
 COMMIT;
 
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
