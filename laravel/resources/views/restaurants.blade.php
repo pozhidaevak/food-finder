@@ -63,7 +63,7 @@
         <!-- filter box on top of the page -->
         <div class="row col-xs-12 col-sm-8 col-sm-offset-2"><div class="row my-filter-container ">
 
-                <div class="food-tree col-xs-12 col-sm-4">Food tree (TBD)</div>
+                <div class="food-tree col-xs-12 col-sm-4" style="overflow-y: scroll; height:120px " ><div id="food_tree"></div></div>
 
                 <!-- Location search-->
                 <div class="loc-search col-xs-12 col-sm-8"> {{__("Search by location: ")}}
@@ -125,4 +125,13 @@
                 @endforeach
 
         </div>
+@stop
+
+@section('footer')
+    <script type="application/javascript">
+            $('#food_tree').jstree({ 'core' : {
+            'data' : {!! $foods !!}
+            },
+            'plugins': ['checkbox', 'wholerow']}); //TODO look into state, search and sort plugins here
+    </script>
 @stop

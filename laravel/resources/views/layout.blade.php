@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{URL::to('css/app.css')}}">
     <link rel="stylesheet" href="{{URL::to('css/font-awesome.css')}}">
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC533-V9Z7cF6a8HP91E3DbX-Xq0DCz9Q0&language=en&libraries=places"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/themes/default/style.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.3/jstree.min.js"></script>
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
@@ -98,5 +100,6 @@
             window.location.assign('/' + this.value)
         })
     </script>
+    @yield('footer')
 </body>
 </html>

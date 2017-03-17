@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Language;
 use App\Models\Restaurant;
+use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Cookie\CookieJar;
 
@@ -36,7 +37,11 @@ class RestaurantController extends Controller
         //retrieving lists of all restaurants
         $restaurants = Restaurant::all();
 
-        return view('restaurants', compact('restaurants', 'currentLocale', 'locales'));
+        $foods = Food::all()->map(function($item) use (&$currentLocale) {
+            return $item->toCustomJson($currentLocale);
+        });
+
+        return view('restaurants', compact('restaurants', 'currentLocale', 'locales', 'foods'));
     }
 
     /**
