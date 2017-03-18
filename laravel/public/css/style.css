@@ -1,0 +1,3 @@
+.hidden-by-food, .hidden-by-loc {
+    display: none !important;
+}

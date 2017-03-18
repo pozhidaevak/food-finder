@@ -3,6 +3,7 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="{{URL::to('js/distance.js')}}"></script>
+    <link rel="stylesheet" href="{{URL::to('css/style.css')}}">
     <script type="application/javascript">
         $( function() {
             var handle = $( "#custom-handle" );
@@ -14,7 +15,7 @@
                     handle.text( ui.value );
                 },
                 step:0.1,
-                max:20,
+                max:15,
                 value:1
             });
         } );
@@ -29,6 +30,7 @@
                 }
             });
         }
+        var restFoods = {};
         function locFilter() {
             var targetDist = $('#slider').slider('value');
             var targetLat = aut.getPlace().geometry.location.lat();
@@ -37,9 +39,9 @@
                 var currLat = $(this).attr('lat');
                 var currLng = $(this).attr('lng');
                 if (distance(targetLat,targetLng, currLat, currLng, 'M') > targetDist) { //TODO handle different units
-                    $(this).hide()
+                    $(this).addClass('hidden-by-loc')
                 } else {
-                    $(this).show()
+                    $(this).removeClass('hidden-by-loc')
                 }
             })
             //alert(aut.getPlace().name + aut.getPlace().geometry.location)
@@ -92,6 +94,10 @@
             <!-- List of restaurants-->
             <div class="row restaurants col-xs-12 col-sm-8 col-sm-offset-2">
                 @foreach($restaurants as $restaurant)
+                    <script type="application/javascript">
+                        restFoods[{{$restaurant->id}}] = {!! $restaurant->foods()->get(['path'])!!}
+                        .map(function(a) {return a.path});
+                    </script>
                     <?php $rest_transl = $restaurant->restaurant_transls()->where('language_code', App::getLocale())->first()?>
                     <div class="row restaurant" id="{{$restaurant->id}}" lng="{{$restaurant->lng}}" lat="{{$restaurant->lat}}">
 
@@ -129,7 +135,29 @@
 
 @section('footer')
     <script type="application/javascript">
-            $('#food_tree').jstree({ 'core' : {
+            $('#food_tree')
+                .on('changed.jstree', function (e, data) {
+                    var selLenght = data.selected.length;
+
+                    if (selLenght == 0) {
+                        $('.restaurant').removeClass('hidden-by-food')
+                    } else {
+                        var selected_leaves = jQuery.grep(data.selected, function(n) {
+                            return data.instance.is_leaf(n)
+                        })
+                        $('.restaurant').each(function(){
+                            var id = $(this).attr('id');
+                            var rest_foods = restFoods[id];
+                            if( _.difference(selected_leaves, rest_foods) == 0) {
+                                $(this).removeClass('hidden-by-food')
+                            } else {
+                                $(this).addClass('hidden-by-food')
+                            }
+                        });
+                    }
+                })
+
+                .jstree({ 'core' : {
             'data' : {!! $foods !!}
             },
             'plugins': ['checkbox', 'wholerow']}); //TODO look into state, search and sort plugins here
