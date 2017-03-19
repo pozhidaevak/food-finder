@@ -10,9 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use  \App\Http\Controllers\RestaurantController;
+use \App\Models\Restaurant;
 
 Route::get('/', function () {
     $locale = Cookie::get('lang', App::getLocale());
     return redirect($locale);
 });
 Route::get('{locale}/', 'RestaurantController@index');
+
+Route::get('{locale}/{id}', 'RestaurantController@show');

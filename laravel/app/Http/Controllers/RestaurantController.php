@@ -26,13 +26,9 @@ class RestaurantController extends Controller
         //Adding cookie with current local
         $cookieJar->queue(cookie('lang', $currentLocale));
 
+        $locales = $this->getLocales();
 
-        //retrieving list of locales and converting it to associative array
-        $langs = Language::all();
-        $locales = array();
-        foreach($langs as $lang) {
-            $locales[$lang->code] = $lang->native_name . ' (' . $lang->eng_name . ')';
-        }
+
 
         //retrieving lists of all restaurants
         $restaurants = Restaurant::all();
@@ -44,6 +40,27 @@ class RestaurantController extends Controller
         return view('restaurants', compact('restaurants', 'currentLocale', 'locales', 'foods'));
     }
 
+    /**
+     * @param CookieJar $cookieJar
+     * @param $currentLocale
+     * @param $id id of restaurant
+     */
+    public function show(CookieJar $cookieJar, $currentLocale, $id )
+    {
+        $this->setLocale($cookieJar, $currentLocale);
+        $locales = $this->getLocales();
+        $restaurant = Restaurant::all()->where('id', $id)->first();
+        $menu = $restaurant->foods()->select('food_path');
+        log('Menu: ' . $menu);
+        return view('restaurant', compact('restaurant', 'currentLocale', 'locales', 'menu' ));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Restaurant  $restaurant
+     * @return \Illuminate\Http\Response
+     */
     /**
      * Show the form for creating a new resource.
      *
@@ -65,23 +82,7 @@ class RestaurantController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Restaurant  $restaurant
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Restaurant $restaurant)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Restaurant  $restaurant
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Restaurant $restaurant)
     {
         //
@@ -108,5 +109,23 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         //
+    }
+
+    protected function setLocale(CookieJar $cookieJar, $currentLocale) {
+        //setting locale
+        \App::setLocale($currentLocale);
+
+        //Adding cookie with current local
+        $cookieJar->queue(cookie('lang', $currentLocale));//
+    }
+
+    protected function getLocales() {
+        //retrieving list of locales and converting it to associative array
+        $langs = Language::all();
+        $locales = array();
+        foreach($langs as $lang) {
+            $locales[$lang->code] = $lang->native_name . ' (' . $lang->eng_name . ')';
+        }
+        return $locales;
     }
 }
