@@ -16,6 +16,7 @@ class Restaurant extends \App\Models\Base\Restaurant
         'website',
         'name'
     ];
+    const timeDisplFormat = 'H:i';
 
     /**
      * @return string Human readable string that determinate if restaurant is open now and when it will be open
@@ -23,7 +24,7 @@ class Restaurant extends \App\Models\Base\Restaurant
      */
     public function openString()
     {
-        $displFormat = 'H:i';
+
 
         $dayOfWeek = Carbon::now()->dayOfWeek;
 
@@ -31,13 +32,13 @@ class Restaurant extends \App\Models\Base\Restaurant
         //$tdTimeTo = $this->restaurant_schedules()->where('weekday_names_id', $dayOfWeek)->first()->time_to;
 
         if (Carbon::now()->between($tdSchedule->time_from, $tdSchedule->time_to)) { // if works now
-            return __("Open till: ") . $tdSchedule->time_to->format($displFormat);
+            return __("Open till: ") . $tdSchedule->time_to->format(Restaurant::timeDisplFormat);
         } else if (Carbon::now()->lt($tdSchedule->time_from)) { //if still hasn't opened today
-            return __("Will open at: ") . $tdSchedule->time_from->format($displFormat);
+            return __("Will open at: ") . $tdSchedule->time_from->format(Restaurant::timeDisplFormat);
         } else { //already closed today
             $tmDayOfWeek = Carbon::now()->addDay()->dayOfWeek;
             return __("Will open tomorrow at: ") .
-                $this->restaurant_schedules()->where('weekday_names_id', $tmDayOfWeek)->first()->time_from->format($displFormat);
+                $this->restaurant_schedules()->where('weekday_names_id', $tmDayOfWeek)->first()->time_from->format(Restaurant::timeDisplFormat);
         }
     }
 

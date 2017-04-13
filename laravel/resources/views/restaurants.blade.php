@@ -15,9 +15,8 @@
 
 @section('content')
     <div class="container-fluid">
-
         <!-- filter box on top of the page -->
-        <div class="row col-xs-12 col-sm-8 col-sm-offset-2">
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
             <div class="row my-filter-container ">
                 <!-- Food search-->
                 <div class="food-tree col-xs-12 col-sm-4" style="overflow-y: scroll; height:120px " ><div id="food_tree"></div></div>
@@ -42,7 +41,7 @@
         </div>
 
         <!-- List of restaurants-->
-        <div class="row restaurants col-xs-12 col-sm-8 col-sm-offset-2">
+        <div class="restaurants col-xs-12 col-sm-8 col-sm-offset-2">
             @foreach($restaurants as $restaurant)
                 <script type="application/javascript">
                     restFoods[{{$restaurant->id}}] = {!! $restaurant->foods()->get(['path'])!!}
@@ -51,7 +50,7 @@
                 <?php $rest_transl = $restaurant->restaurant_transls()->where('language_code', App::getLocale())->first()?>
                 <div class="row restaurant" id="{{$restaurant->id}}" lng="{{$restaurant->lng}}" lat="{{$restaurant->lat}}">
                     <div class="rest_name col-sm-8 col-xs-12 visible-xs-block">
-                        <h1>{{$restaurant->name}}</h1>
+                        <h1><a href="{{ App::getLocale() . '/' . $restaurant->id}}" target="_blank">{{$restaurant->name}}</a></h1>
                     </div>
                     <div class="col-xs-12 col-sm-4 rest_image ">
                         <a class="thumbnail">
@@ -59,7 +58,7 @@
                         </a>
                     </div>
                     <div class="rest_name col-sm-8 col-xs-12 hidden-xs">
-                        <h1>{{$restaurant->name}}</h1>
+                        <h1><a href="{{ App::getLocale() . '/' . $restaurant->id}}" target="_blank">{{$restaurant->name}}</a></h1>
                     </div>
                     <div class="rest_description col-sm-8 col-xs-12">{{$rest_transl->description}}</div>
                     <div class="col-xs-12 col-sm-4"><span class="glyphicon glyphicon-earphone"></span>

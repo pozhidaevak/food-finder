@@ -23,20 +23,25 @@
     <style>
         div.my-filter-container {
             border: 1px solid #ccc;
-            margin: 8px;
+            margin-top: 8px;
+            margin-bottom:8px;
             padding: 8px;
             border-radius: 4px;
             background-color: #7da8c3;
         }
         div.restaurant {
             border: 1px solid #ccc;
-            margin: 8px;
+            margin-top: 8px;
+            margin-bottom:8px;
             padding: 8px;
             border-radius: 4px;
             background-color: #fff;
         }
         a.thumbnail {
             margin-bottom: 0px;
+        }
+        a {
+            color: #636b6f;
         }
         html, body {
             background-color: #eee;

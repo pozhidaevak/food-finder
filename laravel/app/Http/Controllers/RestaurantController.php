@@ -51,7 +51,6 @@ class RestaurantController extends Controller
         $locales = $this->getLocales();
         $restaurant = Restaurant::all()->where('id', $id)->first();
         $menu = $restaurant->foods()->select('food_path');
-        log('Menu: ' . $menu);
         return view('restaurant', compact('restaurant', 'currentLocale', 'locales', 'menu' ));
     }
 
