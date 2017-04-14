@@ -1,7 +1,6 @@
 @extends('layout')
 @section('head')
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
     <script src="{{URL::to('js/distance.js')}}"></script>
     <link rel="stylesheet" href="{{URL::to('css/style.css')}}">
     <script src="{{URL::to('js/restaurants.js')}}"></script>
@@ -50,7 +49,7 @@
                 <?php $rest_transl = $restaurant->restaurant_transls()->where('language_code', App::getLocale())->first()?>
                 <div class="row restaurant" id="{{$restaurant->id}}" lng="{{$restaurant->lng}}" lat="{{$restaurant->lat}}">
                     <div class="rest_name col-sm-8 col-xs-12 visible-xs-block">
-                        <h1><a href="{{ App::getLocale() . '/' . $restaurant->id}}" target="_blank">{{$restaurant->name}}</a></h1>
+                        <h1><a href="{{ '/' . App::getLocale() . '/' . $restaurant->id}}" target="_blank">{{$restaurant->name}}</a></h1>
                     </div>
                     <div class="col-xs-12 col-sm-4 rest_image ">
                         <a class="thumbnail">
@@ -58,7 +57,7 @@
                         </a>
                     </div>
                     <div class="rest_name col-sm-8 col-xs-12 hidden-xs">
-                        <h1><a href="{{ App::getLocale() . '/' . $restaurant->id}}" target="_blank">{{$restaurant->name}}</a></h1>
+                        <h1><a href="{{ '/' . App::getLocale() . '/' . $restaurant->id}}" target="_blank">{{$restaurant->name}}</a></h1>
                     </div>
                     <div class="rest_description col-sm-8 col-xs-12">{{$rest_transl->description}}</div>
                     <div class="col-xs-12 col-sm-4"><span class="glyphicon glyphicon-earphone"></span>

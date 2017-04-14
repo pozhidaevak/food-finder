@@ -14,6 +14,7 @@ This function binds google maps autocomplete class with input element with id 'l
 Also it prevents form submit event on hitting Enter key
  */
 function locAutocomplete() {
+    localStorage.removeItem("loc");
     var input = document.getElementById("loc-text");
     googleAutoComplete = new google.maps.places.Autocomplete(input);
     google.maps.event.addDomListener(input, 'keydown', function(e) {
@@ -31,6 +32,7 @@ function locFilter() {
     var targetDist = $('#slider').slider('value');
     var targetLat = googleAutoComplete.getPlace().geometry.location.lat();
     var targetLng = googleAutoComplete.getPlace().geometry.location.lng();
+    localStorage["loc"] = targetLat + ',' + targetLng;
     $('div.restaurant').each(function (){
         var currLat = $(this).attr('lat');
         var currLng = $(this).attr('lng');

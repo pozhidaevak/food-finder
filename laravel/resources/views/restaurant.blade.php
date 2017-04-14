@@ -49,9 +49,63 @@
                         </table>
                     </div>
                     <div class="clearfix"></div>
+                    <iframe
+                            id="map-frame"
+                            width="600"
+                            height="450"
+                            frameborder="0" style="border:0"
+                            >
+                    </iframe>
                     <div class="col-xs-12" id="map"></div>
 
                     <script>
+                        initializeEmbed()
+                        function initializeEmbed() {
+                            var url = "https://www.google.com/maps/embed/v1/directions?key=AIzaSyC533-V9Z7cF6a8HP91E3DbX-Xq0DCz9Q0&destination={{ $restaurant->lat }},{{$restaurant->lng}}&language={{substr(App::getLocale(),0,2)}}"
+                            var currLoc = localStorage["loc"];
+                            if (currLoc != undefined) {
+                                //use location from restaurants page
+                                $('#map-frame').attr("src", url + "&origin=" + currLoc );
+                            } else {
+                                //use location from browser
+                                navigator.geolocation.getCurrentPosition(function(pos) {
+                                    $('#map-frame').attr("src", url + "&origin=" + pos.coords.latitude + ',' + pos.coords.longitude );
+                                }, function() {
+                                    url = "https://www.google.com/maps/embed/v1/place?key=AIzaSyC533-V9Z7cF6a8HP91E3DbX-Xq0DCz9Q0&q={{ $restaurant->lat }},{{$restaurant->lng}}&language={{substr(App::getLocale(),0,2)}}"
+                                    $('#map-frame').attr("src", url)
+
+                                })
+                            }
+
+                        }
+                        /*var directionsDisplay;
+                        var directionsService = new google.maps.DirectionsService();
+                        var map;
+                        var restaurant = new google.maps.LatLng({{ $restaurant->lat }}, {{$restaurant->lng}});
+                        function initialize() {
+                            directionsDisplay = new google.maps.DirectionsRenderer();
+
+                            var mapOptions = {
+                                zoom:7,
+                                center: restaurant
+                            }
+                            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                            directionsDisplay.setMap(map);
+                        }
+
+                        function calcRoute() {
+                            var start = 'Nottingham';
+                            var request = {
+                                origin: start,
+                                destination: restaurant,
+                                travelMode: 'DRIVING'
+                            };
+                            directionsService.route(request, function(result, status) {
+                                if (status == 'OK') {
+                                    directionsDisplay.setDirections(result);
+                                }
+                            });
+                        }
                         function initMap() {
                             var uluru = {lat: {{ $restaurant->lat }}, lng: {{$restaurant->lng}} };
                             var map = new google.maps.Map(document.getElementById('map'), {
@@ -62,11 +116,11 @@
                                 position: uluru,
                                 map: map
                             });
-                        }
+                        }*/
                     </script>
-                    <script async defer
+                   <!-- <script async defer
                             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC533-V9Z7cF6a8HP91E3DbX-Xq0DCz9Q0&callback=initMap&language={{App::getLocale()}}">
-                    </script>
+                    </script>-->
 
 
                 </div>
