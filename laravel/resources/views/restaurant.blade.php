@@ -38,7 +38,7 @@
                         &nbsp;{{$restaurant->phone}}
                     </div>
                     <div class="col-xs-12 col-sm-4"><span class="glyphicon glyphicon-info-sign"></span>
-                        &nbsp;{{$restaurant->website}}
+                        &nbsp;<a href="http://{{$restaurant->website}}">{{$restaurant->website}}</a>
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <strong>{{__('Opening hours: ')}}</strong>

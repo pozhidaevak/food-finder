@@ -45,6 +45,9 @@
         a {
             color: #636b6f;
         }
+        body {
+            padding-top: 15px;
+        }
         html, body {
             background-color: #eee;
             color: #636b6f;
@@ -94,6 +97,11 @@
 
         .m-b-md {
             margin-bottom: 30px;
+        }
+        [name=locale] {
+            position: fixed;
+            z-index: 100;
+            margin-top: -15px;
         }
     </style>
     @yield('head')
