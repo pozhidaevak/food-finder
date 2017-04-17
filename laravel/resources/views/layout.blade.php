@@ -104,9 +104,10 @@
     {!! Form::select('locale', $locales, $currentLocale) !!}
     @yield('content')
     <script type="application/javascript" async>
-        $("[name=locale]").change( function() {
-            window.location.assign('/' + this.value)
+        $("[name=locale]").change(function() {
+            window.location.assign(window.location.pathname.replace(/^\/[a-zA-Z]{2,3}/,"\/" + this.value));
         })
+        $("[name=locale]").val( window.location.pathname.match(/^\/([a-zA-Z]{2,3})/)[1]);
     </script>
     @yield('footer')
 </body>

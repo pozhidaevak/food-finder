@@ -5,6 +5,7 @@
 //actions to execute when DOM is ready and safe to manipulate
 $( function() {
     createCustomHandle();
+    localStorage.removeItem("loc");
 } );
 
 var googleAutoComplete;
@@ -14,7 +15,6 @@ This function binds google maps autocomplete class with input element with id 'l
 Also it prevents form submit event on hitting Enter key
  */
 function locAutocomplete() {
-    localStorage.removeItem("loc");
     var input = document.getElementById("loc-text");
     googleAutoComplete = new google.maps.places.Autocomplete(input);
     google.maps.event.addDomListener(input, 'keydown', function(e) {
