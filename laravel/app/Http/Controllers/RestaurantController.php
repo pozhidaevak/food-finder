@@ -50,7 +50,20 @@ class RestaurantController extends Controller
         $this->setLocale($cookieJar, $currentLocale);
         $locales = $this->getLocales();
         $restaurant = Restaurant::all()->where('id', $id)->first();
-        $menu = $restaurant->foods()->select('food_path');
+        $menu = $restaurant->foods;
+
+        foreach ($menu as $food) { //adding parents
+            $path = $food->path;
+            $slashCount = substr_count($path, '/');
+            while ($slashCount > 1) {
+                $path = substr($path,0,strrpos($path,'/',-1));
+                $menu = $menu->merge(Food::all()->where('path', $path));
+                $slashCount = substr_count($path, '/');
+            }
+        }
+        $menu = $menu->map(function($item) use (&$currentLocale) {
+            return $item->toCustomJson($currentLocale);
+        });
         return view('restaurant', compact('restaurant', 'currentLocale', 'locales', 'menu' ));
     }
 

@@ -18,7 +18,7 @@
         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
             <div class="row my-filter-container ">
                 <!-- Food search-->
-                <div class="food-tree col-xs-12 col-sm-4" style="overflow-y: scroll; height:120px " ><div id="food_tree"></div></div>
+                <div class="food-tree col-xs-12 col-sm-4" style="overflow-y: scroll; max-height:120px " >{{__("Search by food:")}}<br/><div id="food_tree"></div></div>
 
                 <!-- Location search-->
                 <div class="loc-search col-xs-12 col-sm-8"> {{__("Search by location: ")}}

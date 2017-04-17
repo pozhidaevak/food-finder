@@ -30,7 +30,10 @@
                         {{$rest_transl->description}}
                         <br><br>
                     </div>
-                    <div class="col-xs-12 col-sm-5">Food menu will be here<br> 1<br>2<br>3<br>4<br>5</div>
+                    <div class="col-xs-12 col-sm-5" >
+                        <strong>{{__("Menu:")}}</strong>
+                        <div id="food_tree" style="overflow-y: scroll; max-height:400px "></div>
+                    </div>
                     <div class="col-xs-12 col-sm-4 col-md-3"><span class="glyphicon glyphicon-earphone"></span>
                         &nbsp;{{$restaurant->phone}}
                     </div>
@@ -82,6 +85,11 @@
                             }
 
                         }
+                        $('#food_tree').jstree({
+                            'core' : {
+                                'data' : {!! $menu !!}
+                            },
+                            'plugins': ['wholerow']}); //TODO look into state, search and sort plugins here
                         /*var directionsDisplay;
                         var directionsService = new google.maps.DirectionsService();
                         var map;
