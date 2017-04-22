@@ -11,7 +11,7 @@
 @section('content')
     <?php $rest_transl = $restaurant->restaurant_transls()->where('language_code', App::getLocale())->first();
     $opening_hours = $restaurant->restaurant_schedules;
-    $format = \App\Models\Restaurant::timeDisplFormat
+    $format = \App\Models\Restaurant::timeDisplFormat;
     ?>
     <div class="container-fluid">
         <div class="row">
@@ -30,17 +30,21 @@
                         {{$rest_transl->description}}
                         <br><br>
                     </div>
-                    <div class="col-xs-12 col-sm-5" >
+                    <div class="col-xs-12 col-sm-4" >
                         <strong>{{__("Menu:")}}</strong>
                         <div id="food_tree" style="overflow-y: scroll; max-height:400px "></div>
                     </div>
-                    <div class="col-xs-12 col-sm-4 col-md-3"><span class="glyphicon glyphicon-earphone"></span>
-                        &nbsp;{{$restaurant->phone}}
+                    <div class="col-xs-12 col-sm-4"><span class="glyphicon glyphicon-earphone"></span>
+                        &nbsp;{{$restaurant->phone}} <br>
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        &nbsp;<a href="http://{{$restaurant->website}}">{{$restaurant->website}}</a> <br>
+                        <strong>{{ __('Address: ') }}</strong> <br>
+                        {!! $address!!}
                     </div>
-                    <div class="col-xs-12 col-sm-4"><span class="glyphicon glyphicon-info-sign"></span>
+                    <!--<div class="col-xs-12 col-sm-4"><span class="glyphicon glyphicon-info-sign"></span>
                         &nbsp;<a href="http://{{$restaurant->website}}">{{$restaurant->website}}</a>
-                    </div>
-                    <div class="col-xs-12 col-sm-6">
+                    </div>-->
+                    <div class="col-xs-12 col-sm-4">
                         <strong>{{__('Opening hours: ')}}</strong>
                         <table>
                         @foreach($opening_hours as $opening_hour)
@@ -90,51 +94,8 @@
                                 'data' : {!! $menu !!}
                             },
                             'plugins': ['wholerow']}); //TODO look into state, search and sort plugins here
-                        /*var directionsDisplay;
-                        var directionsService = new google.maps.DirectionsService();
-                        var map;
-                        var restaurant = new google.maps.LatLng({{ $restaurant->lat }}, {{$restaurant->lng}});
-                        function initialize() {
-                            directionsDisplay = new google.maps.DirectionsRenderer();
 
-                            var mapOptions = {
-                                zoom:7,
-                                center: restaurant
-                            }
-                            map = new google.maps.Map(document.getElementById('map'), mapOptions);
-                            directionsDisplay.setMap(map);
-                        }
-
-                        function calcRoute() {
-                            var start = 'Nottingham';
-                            var request = {
-                                origin: start,
-                                destination: restaurant,
-                                travelMode: 'DRIVING'
-                            };
-                            directionsService.route(request, function(result, status) {
-                                if (status == 'OK') {
-                                    directionsDisplay.setDirections(result);
-                                }
-                            });
-                        }
-                        function initMap() {
-                            var uluru = {lat: {{ $restaurant->lat }}, lng: {{$restaurant->lng}} };
-                            var map = new google.maps.Map(document.getElementById('map'), {
-                                zoom: 17,
-                                center: uluru
-                            });
-                            var marker = new google.maps.Marker({
-                                position: uluru,
-                                map: map
-                            });
-                        }*/
                     </script>
-                   <!-- <script async defer
-                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC533-V9Z7cF6a8HP91E3DbX-Xq0DCz9Q0&callback=initMap&language={{App::getLocale()}}">
-                    </script>-->
-
-
                 </div>
             </div>
         </div>

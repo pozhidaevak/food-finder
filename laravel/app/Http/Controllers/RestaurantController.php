@@ -64,7 +64,11 @@ class RestaurantController extends Controller
         $menu = $menu->map(function($item) use (&$currentLocale) {
             return $item->toCustomJson($currentLocale);
         });
-        return view('restaurant', compact('restaurant', 'currentLocale', 'locales', 'menu' ));
+        $postcode = $restaurant->postcode()->first();
+        $address = $restaurant->adr_firstline .' ' . $postcode->adr_secondline . "<br>" .
+            $postcode->city . "<br>" . $postcode->county . "<br>" .
+            $postcode->postcode;
+        return view('restaurant', compact('restaurant', 'currentLocale', 'locales', 'menu', 'address' ));
     }
 
     /**

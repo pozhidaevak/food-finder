@@ -103,6 +103,25 @@
             z-index: 100;
             margin-top: -15px;
         }
+        #myBtn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed/sticky position */
+            bottom: 20px; /* Place the button at the bottom of the page */
+            right: 30px; /* Place the button 30px from the right */
+            z-index: 99; /* Make sure it does not overlap */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: #7da8c3; /* Set a background color */
+            color: #636b6f; /* Text color */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 10px; /* Rounded corners */
+        }
+
+        #myBtn:hover {
+            background-color: #555; /* Add a dark-grey background on hover */
+            color:#eee;
+        }
     </style>
     @yield('head')
 
@@ -111,6 +130,7 @@
 
     {!! Form::select('locale', $locales, $currentLocale) !!}
     @yield('content')
+    <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
     <script type="application/javascript" async>
         $("[name=locale]").change(function() {
             window.location.assign(window.location.pathname.replace(/^\/[a-zA-Z]{2,3}/,"\/" + this.value));
