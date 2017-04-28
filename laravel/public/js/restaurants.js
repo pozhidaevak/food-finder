@@ -33,15 +33,21 @@ function locFilter() {
     var targetLat = googleAutoComplete.getPlace().geometry.location.lat();
     var targetLng = googleAutoComplete.getPlace().geometry.location.lng();
     localStorage["loc"] = targetLat + ',' + targetLng;
+
     $('div.restaurant').each(function () {
         var currLat = $(this).attr('lat');
         var currLng = $(this).attr('lng');
-        if (distance(targetLat, targetLng, currLat, currLng, 'M') > targetDist) { //TODO handle different units
+        var dist = distance(targetLat, targetLng, currLat, currLng, 'M');
+        var distStr = dist > 0.1? Math.round(dist * 10) / 10: "<0.1";
+        distStr +=" mi";
+        $(this).find(".dist-text").text(distStr);
+        if ( dist > targetDist) { //TODO handle different units
             $(this).addClass('hidden-by-loc')
         } else {
             $(this).removeClass('hidden-by-loc')
         }
     });
+    $('div.distance').show();
     //alert(googleAutoComplete.getPlace().name + googleAutoComplete.getPlace().geometry.location)
 }
 

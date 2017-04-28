@@ -5,7 +5,8 @@
   "Search by location: ": "Поиск по местонахождению: ",
   "Distance from location: ": "Растояние от места: ",
   "Input location or place...": "Введите местонахождение",
-  "Go!": "Вперед!"
+  "Go!": "Вперед!",
+  "Address: " : "Адрес: "
 
 
 }

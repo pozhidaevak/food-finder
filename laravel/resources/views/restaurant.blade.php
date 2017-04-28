@@ -1,12 +1,5 @@
 @extends('layout')
 @section('head')
-   <!-- <style>
-        #map {
-            height: 400px;
-            width: 90%;
-            margin-left:15px;
-        }
-    </style>-->
 @endsection
 @section('content')
     <?php $rest_transl = $restaurant->restaurant_transls()->where('language_code', App::getLocale())->first();
@@ -59,9 +52,7 @@
                     <div class="col-xs-12" id="map"><iframe onload="mapRatio()"
                                 id="map-frame"
                                 width="100%"
-
-                                frameborder="0" style="border:0; "
-                        >
+                                frameborder="0" style="border:0; ">
                         </iframe></div>
 
                     <script>

@@ -28,8 +28,6 @@ class RestaurantController extends Controller
 
         $locales = $this->getLocales();
 
-
-
         //retrieving lists of all restaurants
         $restaurants = Restaurant::all();
 
