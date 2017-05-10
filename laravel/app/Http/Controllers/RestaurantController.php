@@ -39,7 +39,7 @@ class RestaurantController extends Controller
     }
 
     /**
-     * @param CookieJar $cookieJar
+     * @param CookieJar $cookieJar. Cookies are needed to remember locale
      * @param $currentLocale
      * @param $id id of restaurant
      */

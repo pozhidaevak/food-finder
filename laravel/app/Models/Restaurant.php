@@ -29,7 +29,6 @@ class Restaurant extends \App\Models\Base\Restaurant
         $dayOfWeek = Carbon::now()->dayOfWeek;
 
         $tdSchedule = $this->restaurant_schedules()->where('weekday_names_id', $dayOfWeek)->first();
-        //$tdTimeTo = $this->restaurant_schedules()->where('weekday_names_id', $dayOfWeek)->first()->time_to;
 
         if (Carbon::now()->between($tdSchedule->time_from, $tdSchedule->time_to)) { // if works now
             return __("Open till: ") . $tdSchedule->time_to->format(Restaurant::timeDisplFormat);

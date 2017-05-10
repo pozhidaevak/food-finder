@@ -3,10 +3,12 @@
   "Will open tomorrow at: ": "Откроется завтра в: ",
   "Will open at: ": "Откроется в: ",
   "Search by location: ": "Поиск по местонахождению: ",
-  "Distance from location: ": "Растояние от места: ",
+  "Distance(mi): " : "Растояние (mi): ",
   "Input location or place...": "Введите местонахождение",
   "Go!": "Вперед!",
-  "Address: " : "Адрес: "
-
-
+  "Address: " : "Адрес: ",
+  "Search by food: " : "Поиск по еде: ",
+  "Menu:" : "Меню: ",
+  "Description: ": "Описание: ",
+  "Opening hours: ": "Часы работы: "
 }

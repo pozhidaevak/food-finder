@@ -16,7 +16,16 @@ var restFoods = {};
  */
 function locAutocomplete() {
     var input = document.getElementById("loc-text");
-    googleAutoComplete = new google.maps.places.Autocomplete(input);
+    var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(52.911926, -1.234651),
+        new google.maps.LatLng(52.990314, -1.114763)
+        );
+
+    var options = {
+        bounds: defaultBounds,
+        strictBounds: false
+    };
+    googleAutoComplete = new google.maps.places.Autocomplete(input,options);
     google.maps.event.addDomListener(input, 'keydown', function (e) {
         if (e.keyCode == 13) { //don't submit form on Enter
             e.preventDefault();
@@ -68,6 +77,7 @@ function createCustomHandle() {
 
 function createFoodTree(foods) {
     $('#food_tree')
+        //Filter by food
         .on('changed.jstree', function (e, data) {
             var selLenght = data.selected.length;
 
@@ -91,7 +101,10 @@ function createFoodTree(foods) {
 
         .jstree({
             'core': {
-                'data': foods
+                'data': foods,
+                'themes': {
+                    'icons': false
+                }
             },
             'plugins': ['checkbox', 'wholerow', 'search']
         }); //TODO look into state, search and sort plugins here
